@@ -83,7 +83,7 @@ class AprendicesController extends Controller
     /**
      * Actualizar
      */
-    public function update(Request $request, aprendices $aprendices)
+    public function update(Request $request, $aprendices)
     {
         $request->validate([
             'Numdoc' => 'required|numeric',

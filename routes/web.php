@@ -57,5 +57,9 @@ Route::get('/regionales', [RegionalesController::class, 'index']);
 Route::resource('eps', EpsController::class);
 
 //____________________________________________________________________________________________________________________
+//___________________________________________Users_______________________________________________________________________
+use App\Http\Controllers\UsersController;
 
+Route::get('/users/create', [UsersController::class, 'create'])->name('users.create');
+Route::post('/users/store', [UsersController::class, 'store'])->name('users.store');
 //____________________________________________________________________________________________________________________
