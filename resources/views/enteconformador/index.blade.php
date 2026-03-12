@@ -48,6 +48,7 @@
         @endforeach
         </tbody>
     </table>
+    <a href="/" class="btn btn-secondary">Volver</a>
 @endif
 
 </body>

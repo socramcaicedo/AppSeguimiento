@@ -21,7 +21,7 @@ class IntructoresController extends Controller
      */
     public function create()
     {
-        //
+        return view('instructores.create');
     }
 
     /**
@@ -29,38 +29,69 @@ class IntructoresController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'Tdoc' => 'required',
+            'Numdoc' => 'required',
+            'Nombres' => 'required',
+            'Apellidos' => 'required',
+        ]);
+
+        intructores::create($request->all());
+
+        return redirect()->route('instructores.index')
+            ->with('success', 'Instructor creado correctamente');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(intructores $intructores)
+    public function show($NIS)
     {
-        //
+        $instructor = intructores::findOrFail($NIS);
+
+        return view('instructores.show', compact('instructor'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(intructores $intructores)
+    public function edit($NIS)
     {
-        //
+        $instructor = intructores::findOrFail($NIS);
+
+        return view('instructores.edit', compact('instructor'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, intructores $intructores)
+    public function update(Request $request, $NIS)
     {
-        //
+        $request->validate([
+            'Tdoc' => 'required',
+            'Numdoc' => 'required',
+            'Nombres' => 'required',
+            'Apellidos' => 'required',
+        ]);
+
+        $instructor = intructores::findOrFail($NIS);
+
+        $instructor->update($request->all());
+
+        return redirect()->route('instructores.index')
+            ->with('success', 'Instructor actualizado correctamente');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(intructores $intructores)
+    public function destroy($NIS)
     {
-        //
+        $instructor = intructores::findOrFail($NIS);
+
+        $instructor->delete();
+
+        return redirect()->route('instructores.index')
+            ->with('success', 'Instructor eliminado correctamente');
     }
 }

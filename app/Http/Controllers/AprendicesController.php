@@ -6,6 +6,7 @@ use App\Models\aprendices;
 use App\Models\TiposDocumento;
 use App\Models\FichaDeCaracterizacion;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class AprendicesController extends Controller
 {
@@ -15,12 +16,12 @@ class AprendicesController extends Controller
     public function index()
     {
         // Cargar relaciones (recomendado)
-        $aprendices = aprendices::with([
+        $aprendiz= aprendices::with([
             'tipoDocumento',
             'fichaCaracterizacion'
         ])->get();
 
-        return view('aprendices.index', compact('aprendices'));
+        return view('aprendices.index', compact('aprendiz'));
     }
 
     /**
@@ -60,32 +61,33 @@ class AprendicesController extends Controller
     /**
      * Mostrar uno
      */
-    public function show(aprendices $aprendices)
+    public function show($NIS)
     {
-        return view('aprendices.show', ['aprendiz' => $aprendices]);
+        $aprendiz = aprendices::where('NIS', $NIS)->firstOrFail();
+
+        return view('aprendices.show', compact('aprendiz'));
     }
 
     /**
      * Formulario editar
      */
-    public function edit(aprendices $aprendices)
+    public function edit($NIS)
     {
+        $aprendiz = aprendices::where('NIS', $NIS)->firstOrFail();
         $tipos = TiposDocumento::all();
         $fichas = FichaDeCaracterizacion::all();
 
-        return view('aprendices.edit', [
-            'aprendiz' => $aprendices,
-            'tipos' => $tipos,
-            'fichas' => $fichas
-        ]);
+
+        return view('aprendices.edit', compact('tipos', 'fichas', 'aprendiz'));
     }
 
     /**
      * Actualizar
      */
-    public function update(Request $request, $aprendices)
+    public function update(Request $request, $NIS)
     {
         $request->validate([
+            'NIS' => 'required|numeric',
             'Numdoc' => 'required|numeric',
             'Nombres' => 'required|string|max:100',
             'Apellidos' => 'required|string|max:100',
@@ -93,7 +95,9 @@ class AprendicesController extends Controller
             'tblfichadecaraterizacion_NIS' => 'required|exists:tblfichadecaraterizacion,NIS'
         ]);
 
-        $aprendices->update($request->all());
+        $aprendiz = Aprendices::findOrFail($NIS);
+
+        $NIS->update($request->all());
 
         return redirect()->route('aprendices.index')
             ->with('success', 'Aprendiz actualizado');
@@ -102,11 +106,21 @@ class AprendicesController extends Controller
     /**
      * Eliminar
      */
-    public function destroy(aprendices $aprendices)
+    public function destroy(aprendices $aprendiz)
     {
-        $aprendices->delete();
+        $aprendiz->delete();
 
         return redirect()->route('aprendices.index')
             ->with('success', 'Aprendiz eliminado');
+    }
+
+
+    public function pdf($NIS)
+    {
+        $aprendiz = aprendices::where('NIS', $NIS)->firstOrFail();
+
+        $pdf = Pdf::loadView('aprendices.pdf', compact('aprendiz'));
+
+        return $pdf->stream('aprendiz_'.$aprendiz->NIS.'.pdf');
     }
 }

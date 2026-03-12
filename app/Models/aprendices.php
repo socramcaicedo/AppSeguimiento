@@ -11,6 +11,7 @@ class aprendices extends Model
      */
     protected $table = 'tblaprendices';
 
+
     /**
      * Clave primaria
      */

@@ -1,66 +1,64 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Instructores</title>
+    <title>Lista de Instructores</title>
 </head>
+
 <body>
 
 <h2>Lista de Instructores</h2>
 
-{{-- Mensaje de éxito --}}
-@if(session('success'))
-    <p style="color:green">{{ session('success') }}</p>
-@endif
+<a href="{{ route('instructores.create') }}">Crear Instructor</a>
 
 <br><br>
 
-<table border="1" cellpadding="8" cellspacing="0">
-    <thead>
-    <tr>
-        <th>Tipo Doc</th>
-        <th>Número Doc</th>
-        <th>Nombres</th>
-        <th>Apellidos</th>
-        <th>Dirección</th>
-        <th>Teléfono</th>
-        <th>Correo Institucional</th>
-        <th>Correo Personal</th>
-        <th>Sexo</th>
-        <th>Fecha Nacimiento</th>
-        <th>EPS</th>
-        <th>Rol Administrativo</th>
-    </tr>
-    </thead>
+<table border="1" cellpadding="10">
 
-    <tbody>
-    @forelse($instructores as $instructor)
+    <tr>
+        <th>NIS</th>
+        <th>Documento</th>
+        <th>Nombre</th>
+        <th>Teléfono</th>
+        <th>Correo</th>
+        <th>Acciones</th>
+    </tr>
+
+    @foreach($instructores as $instructor)
+
         <tr>
-            <td>{{ $instructor->Tdoc }}</td>
+            <td>{{ $instructor->NIS }}</td>
             <td>{{ $instructor->Numdoc }}</td>
-            <td>{{ $instructor->Nombres }}</td>
-            <td>{{ $instructor->Apellidos }}</td>
-            <td>{{ $instructor->Direccion }}</td>
+            <td>{{ $instructor->Nombres }} {{ $instructor->Apellidos }}</td>
             <td>{{ $instructor->Telefono }}</td>
             <td>{{ $instructor->CorreoInstitucional }}</td>
-            <td>{{ $instructor->CorreoPersonal }}</td>
-            <td>{{ $instructor->Sexo }}</td>
-            <td>{{ $instructor->FechaNacimiento }}</td>
-            <td>{{ $instructor->tbleps_NIS }}</td>
-            <td>{{ $instructor->tblrolesadministrativos_NIS }}</td>
-        </tr>
-    @empty
-        <tr>
-            <td colspan="12" align="center">
-                No hay instructores registrados
+
+            <td>
+
+                <a href="{{ route('instructores.show',$instructor->NIS) }}">Ver</a>
+
+                |
+
+                <a href="{{ route('instructores.edit',$instructor->NIS) }}">Editar</a>
+
+                |
+
+                <form action="{{ route('instructores.destroy',$instructor->NIS) }}" method="POST" style="display:inline;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit"
+                            onclick="return confirm('¿Seguro que deseas eliminar este Instructor?')">
+                        Eliminar
+                    </button>
+                </form>
+
             </td>
         </tr>
-    @endforelse
-    </tbody>
+
+    @endforeach
+
 </table>
+<a href="/" class="btn btn-secondary">Volver</a>
 
 </body>
 </html>

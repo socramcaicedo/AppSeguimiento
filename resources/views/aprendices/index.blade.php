@@ -28,7 +28,7 @@
     </thead>
 
     <tbody>
-    @forelse($aprendices as $aprendiz)
+    @forelse($aprendiz as $aprendiz)
         <tr>
             <td>{{ $aprendiz->NIS }}</td>
             <td>{{ $aprendiz->tbltiposdocumento_NIS }}</td>
@@ -66,5 +66,7 @@
             </td>
         </tr>
     @endforelse
+
     </tbody>
 </table>
+<a href="/" class="btn btn-secondary">Volver</a>

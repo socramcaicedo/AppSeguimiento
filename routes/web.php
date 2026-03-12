@@ -15,7 +15,9 @@ use App\Http\Controllers\EpsController;
 Route::get('/', function () {    return view('welcome');});
 //___________________________________________APRENDICES_______________________________________________________________________
 Route::resource('aprendices', AprendicesController::class);
-//__________________________________________________________________________________________________________________
+Route::get('/aprendices/{NIS}/pdf', [AprendicesController::class, 'pdf'])
+    ->name('aprendices.pdf');
+//__________________________________________________________________________________
 
 //________________________________________PROGRAMA_FORMACION_________________________________________________________________________
 Route::resource('programa', ProgramadeformacionController::class);
@@ -42,7 +44,7 @@ Route::get('/rolesadmin', [RolesadministrativosController::class, 'index']);
 //__________________________________________________________________________________________________________________
 
 //______________________________________INSTRUCTOR______________________________________________________________________
-Route::get('/instructores', [IntructoresController::class, 'index']);
+Route::resource('instructores', IntructoresController::class);
 //__________________________________________________________________________________________________________________
 
 
@@ -63,3 +65,7 @@ use App\Http\Controllers\UsersController;
 Route::get('/users/create', [UsersController::class, 'create'])->name('users.create');
 Route::post('/users/store', [UsersController::class, 'store'])->name('users.store');
 //____________________________________________________________________________________________________________________
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
