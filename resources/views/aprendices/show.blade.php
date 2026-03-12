@@ -10,4 +10,8 @@
 <p><strong>Sexo:</strong> {{ $aprendiz->Sexo }}</p>
 <p><strong>Fecha nacimiento:</strong> {{ $aprendiz->FechaNacimiento }}</p>
 
-<a href="{{ route('aprendices.index') }}">Volver</a>
+<a href="{{ route('aprendices.index') }}">Volver</a> <br>
+<a href="{{ route('aprendices.pdf', $aprendiz->NIS) }}" target="_blank">
+   Descargar Certificado
+</a>
+

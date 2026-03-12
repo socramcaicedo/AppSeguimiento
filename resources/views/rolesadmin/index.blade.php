@@ -32,3 +32,4 @@
     @endforelse
     </tbody>
 </table>
+<a href="/" class="btn btn-secondary">Volver</a>
